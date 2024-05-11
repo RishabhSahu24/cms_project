@@ -20,6 +20,11 @@ export interface DashboardHeaderProps {
   toggleDropdown: () => void;
 }
 
+export interface ProductTableProps {
+  products: any[];
+  handleDelete: (productId: string) => void;
+}
+
 //DashboardHeader (Add Button)
 export interface AddButtonProps {
   handleClick: () => void;
