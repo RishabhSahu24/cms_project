@@ -1,20 +1,21 @@
 import React from "react";
+import { Route, Routes } from "react-router";
+import { ToastContainer } from "react-toastify";
 import LoginPage from "./pages/LoginPage";
 import DashboardPage from "./pages/DashboardPage";
 import RegisterPage from "./pages/RegisterPage";
-import { Route, Routes } from "react-router";
-
-import { ToastContainer } from "react-toastify";
+import AddNewEntries from "./pages/AddNewEntries";
 import "react-toastify/dist/ReactToastify.css";
 
 const App: React.FC = () => {
   return (
     <div className="App">
       <Routes>
-        <Route path="/" element={<DashboardPage />} />
+        <Route path="/" element={<LoginPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/add" element={<AddNewEntries />} />
       </Routes>
       <ToastContainer />
     </div>

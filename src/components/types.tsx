@@ -19,3 +19,8 @@ export interface SidebarProps {
 export interface DashboardHeaderProps {
   toggleDropdown: () => void;
 }
+
+//DashboardHeader (Add Button)
+export interface AddButtonProps {
+  handleClick: () => void;
+}
