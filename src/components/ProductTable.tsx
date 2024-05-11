@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { collection, getDocs } from "@firebase/firestore";
 import { db } from "../context/firebase";
 import Spinner from "../common_ui/Spinner";
+import { Link } from "react-router-dom";
+import { deleteDoc, doc } from "firebase/firestore";
 
 const ProductTable: React.FC = () => {
   const [products, setProducts] = useState<any[]>([]);
@@ -25,6 +27,18 @@ const ProductTable: React.FC = () => {
 
     fetchProducts();
   }, []);
+
+  const handleDelete = async (productId: string) => {
+    try {
+      await deleteDoc(doc(db, "tableEntries", productId));
+      setProducts((prevProducts) =>
+        prevProducts.filter((product) => product.id !== productId)
+      );
+      console.log("Product deleted successfully");
+    } catch (error) {
+      console.error("Error deleting product:", error);
+    }
+  };
 
   return (
     <>
@@ -78,8 +92,25 @@ const ProductTable: React.FC = () => {
                     <td className="px-6 py-4 whitespace-nowrap">
                       {product.assigned ? "Yes" : "No"}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      {/* Add action buttons here */}
+                    <td className="px-6 py-4 whitespace-nowrap space-x-2">
+                      <Link
+                        to={`/edit/${product.id}`}
+                        className="text-yellow-500 hover:text-yellow-400"
+                      >
+                        Edit
+                      </Link>
+                      <button
+                        onClick={() => handleDelete(product.id)}
+                        className="text-red-500 hover:text-red-400"
+                      >
+                        Delete
+                      </button>
+                      <Link
+                        to={`/view/${product.id}`}
+                        className="text-blue-500 hover:text-blue-400"
+                      >
+                        View
+                      </Link>
                     </td>
                   </tr>
                 ))}
