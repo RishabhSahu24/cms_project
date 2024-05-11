@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import DashboardHeader from "./DashboardHeader";
 import ProductTable from "./ProductTable";
 import { collection, getDocs, deleteDoc, doc } from "@firebase/firestore";
