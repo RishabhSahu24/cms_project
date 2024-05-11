@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from "react";
 import DashboardHeader from "./DashboardHeader";
 import ProductTable from "./ProductTable";
 
-const TableContainer: React.FC = () => {
+const Dashboard: React.FC = () => {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -40,4 +40,4 @@ const TableContainer: React.FC = () => {
   );
 };
 
-export default TableContainer;
+export default Dashboard;

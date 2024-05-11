@@ -9,7 +9,7 @@ import Sidebar from "../components/Sidebar";
 
 const DashboardPage: React.FC = () => {
   const [userDetails, setUserDetails] = useState<UserData | null>(null);
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [loading, setLoading] = useState(true);
 
   const fetchUserData = async () => {
     auth.onAuthStateChanged(async (user) => {

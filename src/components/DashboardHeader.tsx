@@ -1,10 +1,17 @@
 import React, { useRef } from "react";
-import { DashboardHeaderProps } from "./types";
+import { AddButtonProps, DashboardHeaderProps } from "./types";
+import { useNavigate } from "react-router-dom";
 
 // DashboardHeader component
 const DashboardHeader: React.FC<DashboardHeaderProps> = ({
   toggleDropdown,
 }) => {
+  const navigate = useNavigate(); // Initialize useNavigate
+
+  const handleClick = () => {
+    navigate("/add"); // Navigate to '/add' when the button is clicked
+  };
+
   return (
     <div className="container items-center flex rounded-3xl py-4 px-6 shadow bg-gray-800 text-white relative">
       {/* Title */}
@@ -14,7 +21,7 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
       <SearchForm />
 
       {/* Add Button */}
-      <AddButton />
+      <AddButton handleClick={handleClick} />
 
       {/* Filter Button */}
       <FilterButton toggleDropdown={toggleDropdown} />
@@ -48,12 +55,13 @@ const SearchForm: React.FC = () => {
 };
 
 // AddButton component
-const AddButton: React.FC = () => {
+const AddButton: React.FC<AddButtonProps> = ({ handleClick }) => {
   return (
     <button
       id="addnewbutton"
       className="ml-auto bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-300 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-white flex items-center"
       type="button"
+      onClick={handleClick}
     >
       Add
     </button>
