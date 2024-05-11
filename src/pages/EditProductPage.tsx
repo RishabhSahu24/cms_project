@@ -68,7 +68,8 @@ const EditEntryPage: React.FC = () => {
   useEffect(() => {
     fetchUserData();
     fetchEntryData();
-  }, [fetchEntryData, id]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
 
   const handleInputChange = (
     e: React.ChangeEvent<

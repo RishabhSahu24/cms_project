@@ -9,24 +9,24 @@ const Dashboard: React.FC = () => {
   const [products, setProducts] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(db, "tableEntries"));
-        const productsData = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setProducts(productsData);
-        setIsLoading(false);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-        setIsLoading(false);
-      }
-    };
+  const fetchProducts = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(db, "tableEntries"));
+      const productsData = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setProducts(productsData);
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      setIsLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchProducts();
-  }, []);
+  }, [products]);
 
   const handleDelete = async (productId: string) => {
     try {
