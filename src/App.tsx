@@ -6,6 +6,8 @@ import DashboardPage from "./pages/DashboardPage";
 import RegisterPage from "./pages/RegisterPage";
 import AddNewEntries from "./pages/AddNewEntries";
 import "react-toastify/dist/ReactToastify.css";
+import ViewEntryPage from "./pages/ViewEntryPage";
+import EditProductPage from "./pages/EditProductPage";
 
 const App: React.FC = () => {
   return (
@@ -16,6 +18,8 @@ const App: React.FC = () => {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/add" element={<AddNewEntries />} />
+        <Route path="/edit/:id" element={<EditProductPage />} />
+        <Route path="/view/:id" element={<ViewEntryPage />} />
       </Routes>
       <ToastContainer />
     </div>

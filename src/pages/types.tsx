@@ -11,3 +11,12 @@ export interface ColorSelectProps {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
+
+export interface EntryData {
+  name: string;
+  color: string;
+  category: string;
+  price: string;
+  assigned: boolean;
+  description: string;
+}

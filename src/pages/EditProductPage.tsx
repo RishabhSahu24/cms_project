@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { UserData } from "../components/types";
-import { doc, getDoc } from "@firebase/firestore";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { doc, getDoc, updateDoc } from "@firebase/firestore";
 import { auth, db } from "../context/firebase";
 import LoadingPage from "./LoadingPage";
 import NavBar from "../components/NavBar";
 import Sidebar from "../components/Sidebar";
 import Button from "../common_ui/Button";
 import Input from "../common_ui/Input";
-import { ColorSelectProps, RadioInputProps } from "./types";
-import { addDoc, collection } from "firebase/firestore";
+import { ColorSelectProps, EntryData, RadioInputProps } from "./types";
 import { toast } from "react-toastify";
+import { UserData } from "../components/types";
 
-const AddNewEntries: React.FC = () => {
+const EditEntryPage: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
   const [userDetails, setUserDetails] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({
@@ -20,7 +21,7 @@ const AddNewEntries: React.FC = () => {
     category: "",
     price: "",
     assigned: false,
-    description: "", // New field for textarea
+    description: "",
   });
 
   const fetchUserData = async () => {
@@ -31,20 +32,43 @@ const AddNewEntries: React.FC = () => {
         if (docSnap.exists()) {
           const userData = docSnap.data() as UserData;
           setUserDetails(userData);
-          setLoading(false); // Set loading to false after user details are fetched
+          setLoading(false);
         } else {
           console.log("Problem");
-          setLoading(false); // Set loading to false even if there's a problem
+          setLoading(false);
         }
       } else {
-        setLoading(false); // Set loading to false if there's no user
+        setLoading(false);
       }
     });
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const fetchEntryData = async () => {
+    try {
+      if (!id) return;
+      const entryRef = doc(db, "tableEntries", id);
+      const entrySnap = await getDoc(entryRef);
+      if (entrySnap.exists()) {
+        const entryData = entrySnap.data() as EntryData;
+        if (entryData) {
+          setFormData(entryData);
+          setLoading(false);
+        }
+      } else {
+        console.log("Entry not found");
+        setLoading(false);
+      }
+    } catch (error: any) {
+      console.error("Error fetching entry data:", error.message);
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchUserData();
-  }, []);
+    fetchEntryData();
+  }, [fetchEntryData, id]);
 
   const handleInputChange = (
     e: React.ChangeEvent<
@@ -86,31 +110,14 @@ const AddNewEntries: React.FC = () => {
     }
 
     try {
-      const user = auth.currentUser;
+      if (!id) return;
+      // Update entry data
+      await updateDoc(doc(db, "tableEntries", id), formData);
 
-      if (user) {
-        // Add a new document with a unique ID
-        const newDocRef = await addDoc(
-          collection(db, "tableEntries"),
-          formData
-        );
-        console.log("Document written with ID: ", newDocRef.id);
-      }
-
-      console.log("Data stored successfully!");
-
-      // Reset form data after storing it
-      setFormData({
-        name: "",
-        color: "",
-        category: "",
-        price: "",
-        assigned: false,
-        description: "",
-      });
+      console.log("Data updated successfully!");
 
       // Display success toast
-      toast.success("Data stored successfully!", {
+      toast.success("Data updated successfully!", {
         position: "top-center",
       });
 
@@ -119,13 +126,14 @@ const AddNewEntries: React.FC = () => {
         window.location.href = "/dashboard";
       }, 5000);
     } catch (error: any) {
-      console.error("Error storing data:", error.message);
+      console.error("Error updating data:", error.message);
       // Display error toast
-      toast.error("Error storing data! Please try again later.", {
+      toast.error("Error updating data! Please try again later.", {
         position: "top-center",
       });
     }
   };
+
   return (
     <>
       {loading ? (
@@ -137,7 +145,7 @@ const AddNewEntries: React.FC = () => {
           <div className="flex-grow mt-20 lg:pl-64">
             <div className="container items-center flex flex-col px-4 mx-auto">
               <div className="container flex rounded-3xl py-4 px-6 shadow bg-gray-800 text-white relative">
-                Add New Entries
+                Edit Entry
               </div>
               <div className="container mt-10 items-center flex rounded-3xl justify-center py-4 px-6 shadow bg-red-100 text-white relative w-1/2">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -239,7 +247,7 @@ const AddNewEntries: React.FC = () => {
                       />
                     </div>
 
-                    <Button type="submit">Add</Button>
+                    <Button type="submit">Update</Button>
                   </form>
                 </div>
               </div>
@@ -309,4 +317,4 @@ const ColorSelect: React.FC<ColorSelectProps> = ({ value, onChange }) => {
   );
 };
 
-export default AddNewEntries;
+export default EditEntryPage;
