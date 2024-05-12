@@ -2,14 +2,14 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { doc, getDoc, updateDoc } from "@firebase/firestore";
 import { auth, db } from "../context/firebase";
+import { ColorSelectProps, EntryData, RadioInputProps } from "./types";
+import { toast } from "react-toastify";
+import { UserData } from "../components/types";
 import LoadingPage from "./LoadingPage";
 import NavBar from "../components/NavBar";
 import Sidebar from "../components/Sidebar";
 import Button from "../common_ui/Button";
 import Input from "../common_ui/Input";
-import { ColorSelectProps, EntryData, RadioInputProps } from "./types";
-import { toast } from "react-toastify";
-import { UserData } from "../components/types";
 
 const EditEntryPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -106,6 +106,7 @@ const EditEntryPage: React.FC = () => {
     if (!name || !color || !category || !price || !description) {
       toast.error("Please fill in all fields!", {
         position: "top-center",
+        delay: 2000,
       });
       return;
     }
@@ -120,6 +121,7 @@ const EditEntryPage: React.FC = () => {
       // Display success toast
       toast.success("Data updated successfully!", {
         position: "top-center",
+        delay: 2000,
       });
 
       // Wait for a short delay before redirecting
@@ -131,6 +133,7 @@ const EditEntryPage: React.FC = () => {
       // Display error toast
       toast.error("Error updating data! Please try again later.", {
         position: "top-center",
+        delay: 2000,
       });
     }
   };

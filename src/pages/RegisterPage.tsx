@@ -56,6 +56,7 @@ const RegisterPage: React.FC = () => {
       // Display success toast
       toast.success("User Registered Successfully!!", {
         position: "top-center",
+        delay: 2000,
       });
 
       // Wait for a short delay before redirecting
@@ -65,6 +66,7 @@ const RegisterPage: React.FC = () => {
     } catch (error: any) {
       toast.error(error.message, {
         position: "top-center",
+        delay: 2000,
       });
     }
   };

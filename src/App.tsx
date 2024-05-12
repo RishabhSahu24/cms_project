@@ -5,9 +5,9 @@ import LoginPage from "./pages/LoginPage";
 import DashboardPage from "./pages/DashboardPage";
 import RegisterPage from "./pages/RegisterPage";
 import AddNewEntries from "./pages/AddNewEntries";
-import "react-toastify/dist/ReactToastify.css";
 import ViewEntryPage from "./pages/ViewEntryPage";
 import EditProductPage from "./pages/EditProductPage";
+import "react-toastify/dist/ReactToastify.css";
 
 const App: React.FC = () => {
   return (

@@ -1,9 +1,16 @@
 import React, { useEffect, useState } from "react";
 import DashboardHeader from "./DashboardHeader";
 import ProductTable from "./ProductTable";
-import { collection, getDocs, deleteDoc, doc } from "@firebase/firestore";
+import {
+  collection,
+  getDocs,
+  deleteDoc,
+  doc,
+  where,
+} from "@firebase/firestore";
 import { db } from "../context/firebase";
 import Spinner from "../common_ui/Spinner";
+import { query } from "firebase/firestore";
 
 const Dashboard: React.FC = () => {
   const [products, setProducts] = useState<any[]>([]);
@@ -26,7 +33,7 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
     fetchProducts();
-  }, [products]);
+  }, []);
 
   const handleDelete = async (productId: string) => {
     try {
@@ -40,6 +47,24 @@ const Dashboard: React.FC = () => {
     }
   };
 
+  const handleSearch = async (searchValue: string) => {
+    try {
+      setIsLoading(true);
+      const querySnapshot = await getDocs(
+        query(collection(db, "tableEntries"), where("name", "==", searchValue))
+      );
+      const searchData = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setProducts(searchData);
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error searching products:", error);
+      setIsLoading(false);
+    }
+  };
+
   const toggleDropdown = () => {
     const dropdown = document.getElementById("dropdown");
     if (dropdown) {
@@ -50,7 +75,10 @@ const Dashboard: React.FC = () => {
   return (
     <div className="flex-grow mt-20 lg:pl-64">
       <div className="container px-4 mx-auto">
-        <DashboardHeader toggleDropdown={toggleDropdown} />
+        <DashboardHeader
+          toggleDropdown={toggleDropdown}
+          handleSearch={handleSearch}
+        />
         {isLoading ? (
           <Spinner />
         ) : (

@@ -1,4 +1,3 @@
-// LoginPage.js
 import React, { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../context/firebase";
@@ -28,6 +27,7 @@ const LoginPage: React.FC = () => {
     } catch (error: any) {
       toast.error(error.message, {
         position: "top-center",
+        delay: 2000,
       });
     }
   };

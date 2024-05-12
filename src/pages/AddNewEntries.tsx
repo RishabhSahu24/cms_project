@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import { UserData } from "../components/types";
 import { doc, getDoc } from "@firebase/firestore";
 import { auth, db } from "../context/firebase";
+import { ColorSelectProps, RadioInputProps } from "./types";
+import { addDoc, collection } from "firebase/firestore";
+import { toast } from "react-toastify";
 import LoadingPage from "./LoadingPage";
 import NavBar from "../components/NavBar";
 import Sidebar from "../components/Sidebar";
 import Button from "../common_ui/Button";
 import Input from "../common_ui/Input";
-import { ColorSelectProps, RadioInputProps } from "./types";
-import { addDoc, collection } from "firebase/firestore";
-import { toast } from "react-toastify";
 
 const AddNewEntries: React.FC = () => {
   const [userDetails, setUserDetails] = useState<UserData | null>(null);
@@ -20,7 +20,7 @@ const AddNewEntries: React.FC = () => {
     category: "",
     price: "",
     assigned: false,
-    description: "", // New field for textarea
+    description: "",
   });
 
   const fetchUserData = async () => {
@@ -31,13 +31,13 @@ const AddNewEntries: React.FC = () => {
         if (docSnap.exists()) {
           const userData = docSnap.data() as UserData;
           setUserDetails(userData);
-          setLoading(false); // Set loading to false after user details are fetched
+          setLoading(false);
         } else {
           console.log("Problem");
-          setLoading(false); // Set loading to false even if there's a problem
+          setLoading(false);
         }
       } else {
-        setLoading(false); // Set loading to false if there's no user
+        setLoading(false);
       }
     });
   };
@@ -81,6 +81,7 @@ const AddNewEntries: React.FC = () => {
     if (!name || !color || !category || !price || !description) {
       toast.error("Please fill in all fields!", {
         position: "top-center",
+        delay: 2000,
       });
       return;
     }
@@ -89,7 +90,6 @@ const AddNewEntries: React.FC = () => {
       const user = auth.currentUser;
 
       if (user) {
-        // Add a new document with a unique ID
         const newDocRef = await addDoc(
           collection(db, "tableEntries"),
           formData
@@ -97,9 +97,6 @@ const AddNewEntries: React.FC = () => {
         console.log("Document written with ID: ", newDocRef.id);
       }
 
-      console.log("Data stored successfully!");
-
-      // Reset form data after storing it
       setFormData({
         name: "",
         color: "",
@@ -112,6 +109,7 @@ const AddNewEntries: React.FC = () => {
       // Display success toast
       toast.success("Data stored successfully!", {
         position: "top-center",
+        delay: 2000,
       });
 
       // Wait for a short delay before redirecting
@@ -123,6 +121,7 @@ const AddNewEntries: React.FC = () => {
       // Display error toast
       toast.error("Error storing data! Please try again later.", {
         position: "top-center",
+        delay: 2000,
       });
     }
   };

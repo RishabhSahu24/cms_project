@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import Dashboard from "../components/Dashboard";
 import { UserData } from "../components/types";
 import { doc, getDoc } from "@firebase/firestore";
 import { auth, db } from "../context/firebase";
+import Dashboard from "../components/Dashboard";
 import LoadingPage from "./LoadingPage";
 import NavBar from "../components/NavBar";
 import Sidebar from "../components/Sidebar";

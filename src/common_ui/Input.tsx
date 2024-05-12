@@ -1,14 +1,6 @@
 // Input.js
 import React from "react";
-
-interface InputProps {
-  label: string;
-  type: string;
-  value: string;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  id: string;
-  required?: boolean;
-}
+import { InputProps } from "./types";
 
 const Input: React.FC<InputProps> = ({
   label,
