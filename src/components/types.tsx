@@ -18,15 +18,19 @@ export interface SidebarProps {
 // DashboardHeader.tsx
 export interface DashboardHeaderProps {
   handleSearch: (value: string) => void;
+  isRest: boolean;
+  fetchProducts: () => void;
 }
 
 export interface ProductTableProps {
   products: any[];
   handleDelete: (productId: string) => void;
-  fetchProducts: () => void;
 }
 
 //DashboardHeader (Add Button)
 export interface AddButtonProps {
   handleClick: () => void;
+}
+export interface ResetButtonProps {
+  handleResetClick: () => void;
 }

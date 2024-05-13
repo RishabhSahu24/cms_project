@@ -15,6 +15,7 @@ import { query } from "firebase/firestore";
 const Dashboard: React.FC = () => {
   const [products, setProducts] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isRest, setIsRest] = useState(false);
 
   const fetchProducts = async () => {
     try {
@@ -25,6 +26,7 @@ const Dashboard: React.FC = () => {
       }));
       setProducts(productsData);
       setIsLoading(false);
+      setIsRest(false);
     } catch (error) {
       console.error("Error fetching products:", error);
       setIsLoading(false);
@@ -63,6 +65,7 @@ const Dashboard: React.FC = () => {
       }));
       setProducts(searchData);
       setIsLoading(false);
+      setIsRest(true);
     } catch (error) {
       console.error("Error searching products:", error);
       setIsLoading(false);
@@ -72,15 +75,15 @@ const Dashboard: React.FC = () => {
   return (
     <div className="flex-grow mt-20 lg:pl-64">
       <div className="container px-4 mx-auto">
-        <DashboardHeader handleSearch={handleSearch} />
+        <DashboardHeader
+          handleSearch={handleSearch}
+          isRest={isRest}
+          fetchProducts={fetchProducts}
+        />
         {isLoading ? (
           <Spinner />
         ) : (
-          <ProductTable
-            products={products}
-            handleDelete={handleDelete}
-            fetchProducts={fetchProducts}
-          />
+          <ProductTable products={products} handleDelete={handleDelete} />
         )}
       </div>
     </div>

@@ -9,6 +9,9 @@ const Sidebar: React.FC<SidebarProps> = ({ handleLogout }) => {
     >
       <div className="h-full px-3 pb-4 overflow-y-auto bg-gray-800 flex flex-col justify-between">
         <div className="space-y-2 font-medium">
+          <h2 className="font-bold leading-9 text-3xl tracking-tight text-white">
+            Filters
+          </h2>
           <ul>
             <li>
               <a
@@ -65,7 +68,7 @@ const Sidebar: React.FC<SidebarProps> = ({ handleLogout }) => {
         </div>
         <button
           onClick={handleLogout}
-          className="w-full py-3 bg-red-600 text-white font-semibold hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-gray-800 rounded-lg shadow-lg"
+          className="w-full py-3 bg-red-600 text-white font-semibold hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 rounded-lg shadow-lg"
         >
           Logout
         </button>

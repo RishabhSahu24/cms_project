@@ -18,7 +18,7 @@ const NavBar: React.FC<NavBarProps> = (props) => {
               src="/logo.png"
               alt="Your Company"
             />
-            <h2 className="font-bold leading-9 tracking-tight text-white">
+            <h2 className="font-bold leading-9 text-3xl tracking-tight text-white">
               GeekyAnts
             </h2>
           </Link>

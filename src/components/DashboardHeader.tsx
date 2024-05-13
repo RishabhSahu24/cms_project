@@ -1,8 +1,16 @@
 import React, { useState } from "react";
-import { AddButtonProps, DashboardHeaderProps } from "./types";
+import {
+  AddButtonProps,
+  DashboardHeaderProps,
+  ResetButtonProps,
+} from "./types";
 import { useNavigate } from "react-router-dom";
 
-const DashboardHeader: React.FC<DashboardHeaderProps> = ({ handleSearch }) => {
+const DashboardHeader: React.FC<DashboardHeaderProps> = ({
+  handleSearch,
+  isRest,
+  fetchProducts,
+}) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -13,10 +21,10 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({ handleSearch }) => {
     <div className="container items-center flex rounded-3xl py-4 px-6 shadow bg-gray-800 text-white relative">
       {/* Title */}
       <Title />
-
       {/* Search Form */}
       <SearchForm handleSearch={handleSearch} />
-
+      {/* Reset */}
+      {isRest ? <Reset handleResetClick={fetchProducts} /> : <></>}
       {/* Add Button */}
       <AddButton handleClick={handleClick} />
     </div>
@@ -77,6 +85,20 @@ const AddButton: React.FC<AddButtonProps> = ({ handleClick }) => {
       onClick={handleClick}
     >
       Add +
+    </button>
+  );
+};
+
+// AddButton component
+const Reset: React.FC<ResetButtonProps> = ({ handleResetClick }) => {
+  return (
+    <button
+      id="addnewbutton"
+      className="ml-auto bg-green-600 hover:bg-green-700 focus:ring-4 w-40 focus:ring-indigo-300 focus:outline-none font-medium rounded-lg justify-center text-sm px-5 py-2.5 text-white flex items-center"
+      type="button"
+      onClick={handleResetClick}
+    >
+      Reset
     </button>
   );
 };
