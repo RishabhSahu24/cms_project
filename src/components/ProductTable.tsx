@@ -5,13 +5,27 @@ import { ProductTableProps } from "./types";
 const ProductTable: React.FC<ProductTableProps> = ({
   products,
   handleDelete,
+  fetchProducts,
 }) => {
   return (
     <div className="mt-4 shadow bg-gray-800 text-white">
       <div className="relative overflow-x-auto">
         {products.length === 0 ? (
-          <div className="flex items-center text-5xl justify-center px-6 py-4 font-bold">
-            No data found.
+          <div>
+            <div className="flex items-center text-5xl justify-center px-6 py-4 font-bold">
+              No data found.
+            </div>
+
+            <div className="flex-grow mt-2 mb-4 ">
+              <div
+                className="container items-center flex flex-col px-4 mx-auto"
+                onClick={fetchProducts}
+              >
+                <div className="container mt-10 items-center flex rounded-3xl justify-center py-4 px-6 shadow bg-red-900 relative w-1/2">
+                  Reset
+                </div>
+              </div>
+            </div>
           </div>
         ) : (
           <table className="w-full text-sm text-left rtl:text-right text-white-400">

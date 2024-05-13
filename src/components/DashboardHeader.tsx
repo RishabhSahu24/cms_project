@@ -2,10 +2,7 @@ import React, { useState } from "react";
 import { AddButtonProps, DashboardHeaderProps } from "./types";
 import { useNavigate } from "react-router-dom";
 
-const DashboardHeader: React.FC<DashboardHeaderProps> = ({
-  toggleDropdown,
-  handleSearch,
-}) => {
+const DashboardHeader: React.FC<DashboardHeaderProps> = ({ handleSearch }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -42,8 +39,9 @@ const SearchForm: React.FC<{ handleSearch: (value: string) => void }> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    handleSearch(searchValue); // Call the handleSearch function with the search value
+    handleSearch(searchValue);
     console.log("Searching for:", searchValue);
+    setSearchValue("");
   };
 
   return (

@@ -17,13 +17,13 @@ export interface SidebarProps {
 
 // DashboardHeader.tsx
 export interface DashboardHeaderProps {
-  toggleDropdown: () => void;
   handleSearch: (value: string) => void;
 }
 
 export interface ProductTableProps {
   products: any[];
   handleDelete: (productId: string) => void;
+  fetchProducts: () => void;
 }
 
 //DashboardHeader (Add Button)

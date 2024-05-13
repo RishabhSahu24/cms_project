@@ -50,6 +50,10 @@ const Dashboard: React.FC = () => {
   const handleSearch = async (searchValue: string) => {
     try {
       setIsLoading(true);
+      if (searchValue === "") {
+        fetchProducts();
+        return;
+      }
       const querySnapshot = await getDocs(
         query(collection(db, "tableEntries"), where("name", "==", searchValue))
       );
@@ -65,24 +69,18 @@ const Dashboard: React.FC = () => {
     }
   };
 
-  const toggleDropdown = () => {
-    const dropdown = document.getElementById("dropdown");
-    if (dropdown) {
-      dropdown.classList.toggle("hidden");
-    }
-  };
-
   return (
     <div className="flex-grow mt-20 lg:pl-64">
       <div className="container px-4 mx-auto">
-        <DashboardHeader
-          toggleDropdown={toggleDropdown}
-          handleSearch={handleSearch}
-        />
+        <DashboardHeader handleSearch={handleSearch} />
         {isLoading ? (
           <Spinner />
         ) : (
-          <ProductTable products={products} handleDelete={handleDelete} />
+          <ProductTable
+            products={products}
+            handleDelete={handleDelete}
+            fetchProducts={fetchProducts}
+          />
         )}
       </div>
     </div>
