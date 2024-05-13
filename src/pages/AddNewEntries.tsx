@@ -132,8 +132,7 @@ const AddNewEntries: React.FC = () => {
       ) : (
         <>
           <NavBar userDetails={userDetails} />
-          <Sidebar handleLogout={handleLogout} />
-          <div className="flex-grow mt-20 lg:pl-64">
+          <div className="flex-grow mt-20 mb-10">
             <div className="container items-center flex flex-col px-4 mx-auto">
               <div className="container flex rounded-3xl py-4 px-6 shadow bg-gray-800 text-white relative">
                 Add New Entries

@@ -44,6 +44,11 @@ const DashboardPage: React.FC = () => {
       console.log("Error ", error.message);
     }
   }
+  async function applyFilters(color: string, category: string) {
+    console.log("Color:", color);
+    console.log("Category:", category);
+    // Implement filtering logic here
+  }
 
   return (
     <>
@@ -52,7 +57,7 @@ const DashboardPage: React.FC = () => {
       ) : (
         <>
           <NavBar userDetails={userDetails} />
-          <Sidebar handleLogout={handleLogout} />
+          <Sidebar handleLogout={handleLogout} applyFilters={applyFilters} />
           <Dashboard />
         </>
       )}

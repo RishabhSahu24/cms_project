@@ -5,7 +5,6 @@ import { auth, db } from "../context/firebase";
 import LoadingPage from "./LoadingPage";
 import { Link, useParams } from "react-router-dom";
 import NavBar from "../components/NavBar";
-import Sidebar from "../components/Sidebar";
 
 const ViewEntryPage: React.FC = () => {
   const [userDetails, setUserDetails] = useState<UserData | null>(null);
@@ -57,16 +56,6 @@ const ViewEntryPage: React.FC = () => {
     fetchProductData();
   }, [fetchProductData]);
 
-  async function handleLogout() {
-    try {
-      await auth.signOut();
-      window.location.href = "/login";
-      console.log("Logout");
-    } catch (error: any) {
-      console.log("Error ", error.message);
-    }
-  }
-
   return (
     <>
       {loading ? (
@@ -74,8 +63,7 @@ const ViewEntryPage: React.FC = () => {
       ) : (
         <>
           <NavBar userDetails={userDetails} />
-          <Sidebar handleLogout={handleLogout} />
-          <div className="flex-grow mt-20 lg:pl-64">
+          <div className="flex-grow mt-20">
             <div className="container items-center flex flex-col px-4 mx-auto">
               <div className="container flex rounded-3xl py-4 px-6 shadow bg-gray-800 text-white relative">
                 View Product
@@ -117,7 +105,7 @@ const ViewEntryPage: React.FC = () => {
             </div>
           </div>
           <Link to="/dashboard">
-            <div className="flex-grow mt-2 lg:pl-64">
+            <div className="flex-grow mt-2">
               <div className="container items-center flex flex-col px-4 mx-auto">
                 <div className="container mt-10 items-center flex rounded-3xl justify-center py-4 px-6 shadow bg-red-900 relative w-1/2">
                   Back

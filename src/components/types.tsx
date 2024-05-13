@@ -13,6 +13,7 @@ export interface NavBarProps {
 // Sidebar.tsx
 export interface SidebarProps {
   handleLogout: () => Promise<void>;
+  applyFilters: (color: string, category: string) => void;
 }
 
 // DashboardHeader.tsx

@@ -7,7 +7,6 @@ import { toast } from "react-toastify";
 import { UserData } from "../components/types";
 import LoadingPage from "./LoadingPage";
 import NavBar from "../components/NavBar";
-import Sidebar from "../components/Sidebar";
 import Button from "../common_ui/Button";
 import Input from "../common_ui/Input";
 
@@ -43,7 +42,6 @@ const EditEntryPage: React.FC = () => {
     });
   };
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const fetchEntryData = async () => {
     try {
       if (!id) return;
@@ -86,16 +84,6 @@ const EditEntryPage: React.FC = () => {
         type === "checkbox" ? (e.target as HTMLInputElement).checked : value,
     }));
   };
-
-  async function handleLogout() {
-    try {
-      await auth.signOut();
-      window.location.href = "/login";
-      console.log("Logout");
-    } catch (error: any) {
-      console.log("Error ", error.message);
-    }
-  }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -145,8 +133,7 @@ const EditEntryPage: React.FC = () => {
       ) : (
         <>
           <NavBar userDetails={userDetails} />
-          <Sidebar handleLogout={handleLogout} />
-          <div className="flex-grow mt-20 lg:pl-64">
+          <div className="flex-grow mt-20">
             <div className="container items-center flex flex-col px-4 mx-auto">
               <div className="container flex rounded-3xl py-4 px-6 shadow bg-gray-800 text-white relative">
                 Edit Entry
