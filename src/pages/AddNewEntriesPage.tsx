@@ -1,22 +1,22 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { doc, getDoc, updateDoc } from "@firebase/firestore";
-import { auth, db } from "../context/firebase";
-import { ColorSelectProps, EntryData, RadioInputProps } from "./types";
-import { toast } from "react-toastify";
+import React, { useEffect, useState } from "react";
 import { UserData } from "../components/types";
+import { doc, getDoc } from "@firebase/firestore";
+import { auth, db } from "../context/firebase";
+import { addDoc, collection } from "firebase/firestore";
+import { toast } from "react-toastify";
 import LoadingPage from "./LoadingPage";
 import NavBar from "../components/NavBar";
 import Button from "../common_ui/Button";
 import Input from "../common_ui/Input";
 import Spinner from "../common_ui/Spinner";
 import Header from "../common_ui/Header";
+import RadioInput from "../components/RadioInput";
+import ColorSelect from "../components/ColorSelect";
 
-const EditEntryPage: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
+const AddNewEntries: React.FC = () => {
   const [userDetails, setUserDetails] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [isEditingProducts, setIsEditingProducts] = useState(false);
+  const [isAddingProducts, setIsAddingProducts] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     color: "",
@@ -36,7 +36,6 @@ const EditEntryPage: React.FC = () => {
           setUserDetails(userData);
           setLoading(false);
         } else {
-          console.log("Problem");
           setLoading(false);
         }
       } else {
@@ -45,32 +44,9 @@ const EditEntryPage: React.FC = () => {
     });
   };
 
-  const fetchEntryData = async () => {
-    try {
-      if (!id) return;
-      const entryRef = doc(db, "tableEntries", id);
-      const entrySnap = await getDoc(entryRef);
-      if (entrySnap.exists()) {
-        const entryData = entrySnap.data() as EntryData;
-        if (entryData) {
-          setFormData(entryData);
-          setLoading(false);
-        }
-      } else {
-        console.log("Entry not found");
-        setLoading(false);
-      }
-    } catch (error: any) {
-      console.error("Error fetching entry data:", error.message);
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
     fetchUserData();
-    fetchEntryData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
+  }, []);
 
   const handleInputChange = (
     e: React.ChangeEvent<
@@ -89,9 +65,8 @@ const EditEntryPage: React.FC = () => {
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    setIsAddingProducts(true);
     e.preventDefault();
-    setIsEditingProducts(true);
-    console.log("Form submitted", formData);
 
     // Check if all form values are present
     const { name, color, category, price, description } = formData;
@@ -104,33 +79,46 @@ const EditEntryPage: React.FC = () => {
     }
 
     try {
-      if (!id) return;
-      // Update entry data
-      await updateDoc(doc(db, "tableEntries", id), formData);
+      const user = auth.currentUser;
 
-      console.log("Data updated successfully!");
+      if (user) {
+        const newDocRef = await addDoc(
+          collection(db, "tableEntries"),
+          formData
+        );
+        console.log("Document written with ID: ", newDocRef.id);
+      }
+
+      setFormData({
+        name: "",
+        color: "",
+        category: "",
+        price: "",
+        assigned: false,
+        description: "",
+      });
 
       // Display success toast
-      toast.success("Data updated successfully!", {
+      toast.success("Data stored successfully!", {
         position: "top-center",
         delay: 2000,
       });
 
-      setIsEditingProducts(false);
+      setIsAddingProducts(false);
+
       // Wait for a short delay before redirecting
       setTimeout(() => {
         window.location.href = "/dashboard";
       }, 5000);
     } catch (error: any) {
-      console.error("Error updating data:", error.message);
+      console.error("Error storing data:", error.message);
       // Display error toast
-      toast.error("Error updating data! Please try again later.", {
+      toast.error("Error storing data! Please try again later.", {
         position: "top-center",
         delay: 2000,
       });
     }
   };
-
   return (
     <>
       {loading ? (
@@ -138,7 +126,7 @@ const EditEntryPage: React.FC = () => {
       ) : (
         <>
           <NavBar userDetails={userDetails} />
-          {isEditingProducts ? (
+          {isAddingProducts ? (
             <>
               <div className="flex-grow mt-20 mb-10">
                 <div className="container items-center flex flex-col px-4 mx-auto">
@@ -147,9 +135,9 @@ const EditEntryPage: React.FC = () => {
               </div>
             </>
           ) : (
-            <div className="flex-grow mt-20">
+            <div className="flex-grow mt-20 mb-10">
               <div className="container items-center flex flex-col px-4 mx-auto">
-                <Header heading={"Edit Entry"} />
+                <Header heading={"Add New Entries"} />
                 <div className="container mt-10 items-center flex rounded-3xl justify-center py-4 px-6 shadow bg-red-100 text-white relative w-1/2">
                   <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                     <form onSubmit={handleSubmit} className="space-y-6">
@@ -250,7 +238,12 @@ const EditEntryPage: React.FC = () => {
                         />
                       </div>
 
-                      <Button type="submit">Update</Button>
+                      <Button
+                        type="submit"
+                        className="w-full bg-indigo-600 hover:bg-indigo-500 focus-visible:outline-indigo-600"
+                      >
+                        Add
+                      </Button>
                     </form>
                   </div>
                 </div>
@@ -263,62 +256,4 @@ const EditEntryPage: React.FC = () => {
   );
 };
 
-const RadioInput: React.FC<RadioInputProps> = ({
-  id,
-  name,
-  value,
-  label,
-  checked,
-  onChange,
-}) => {
-  return (
-    <div className="flex">
-      <input
-        id={id}
-        name={name}
-        type="radio"
-        value={value}
-        checked={checked}
-        onChange={onChange}
-        className="text-indigo-600 focus:ring-indigo-500 h-4 w-4"
-      />
-      <label
-        htmlFor={id}
-        className="ml-3 block text-sm font-medium text-gray-700"
-      >
-        {label}
-      </label>
-    </div>
-  );
-};
-
-const ColorSelect: React.FC<ColorSelectProps> = ({ value, onChange }) => {
-  return (
-    <div>
-      <label
-        htmlFor="color"
-        className="block text-sm font-medium leading-6 text-gray-900"
-      >
-        Color
-      </label>
-      <select
-        id="color"
-        name="color"
-        value={value}
-        onChange={onChange}
-        className="block w-full mt-1  rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-      >
-        <option value="">Select color</option>
-        <option value="red">Red</option>
-        <option value="blue">Blue</option>
-        <option value="green">Green</option>
-        <option value="yellow">Yellow</option>
-        <option value="brown">Brown</option>
-        <option value="grey">Grey</option>
-        <option value="indigo">Indigo</option>
-      </select>
-    </div>
-  );
-};
-
-export default EditEntryPage;
+export default AddNewEntries;

@@ -5,6 +5,7 @@ import {
   ResetButtonProps,
 } from "./types";
 import { useNavigate } from "react-router-dom";
+import Button from "../common_ui/Button";
 
 const DashboardHeader: React.FC<DashboardHeaderProps> = ({
   handleSearch,
@@ -18,7 +19,7 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
   };
 
   return (
-    <div className="container items-center flex rounded-3xl py-4 px-6 shadow bg-gray-800 text-white relative">
+    <div className="container items-center flex rounded-3xl py-4 px-6 shadow bg-black text-white relative">
       {/* Title */}
       <Title />
       {/* Search Form */}
@@ -48,7 +49,6 @@ const SearchForm: React.FC<{ handleSearch: (value: string) => void }> = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     handleSearch(searchValue);
-    console.log("Searching for:", searchValue);
     setSearchValue("");
   };
 
@@ -78,28 +78,28 @@ const SearchForm: React.FC<{ handleSearch: (value: string) => void }> = ({
 // AddButton component
 const AddButton: React.FC<AddButtonProps> = ({ handleClick }) => {
   return (
-    <button
+    <Button
       id="addnewbutton"
-      className="ml-auto bg-indigo-600 hover:bg-indigo-700 focus:ring-4 w-40 focus:ring-indigo-300 focus:outline-none font-medium rounded-lg justify-center text-sm px-5 py-2.5 text-white flex items-center"
+      className="bg-indigo-600 hover:bg-indigo-700 w-40"
       type="button"
       onClick={handleClick}
     >
       Add +
-    </button>
+    </Button>
   );
 };
 
 // AddButton component
 const Reset: React.FC<ResetButtonProps> = ({ handleResetClick }) => {
   return (
-    <button
+    <Button
       id="addnewbutton"
-      className="ml-auto bg-green-600 hover:bg-green-700 focus:ring-4 w-40 focus:ring-indigo-300 focus:outline-none font-medium rounded-lg justify-center text-sm px-5 py-2.5 text-white flex items-center"
+      className="bg-green-600 hover:bg-green-700 w-40"
       type="button"
       onClick={handleResetClick}
     >
       Reset
-    </button>
+    </Button>
   );
 };
 

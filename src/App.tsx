@@ -4,7 +4,7 @@ import { ToastContainer } from "react-toastify";
 import LoginPage from "./pages/LoginPage";
 import DashboardPage from "./pages/DashboardPage";
 import RegisterPage from "./pages/RegisterPage";
-import AddNewEntries from "./pages/AddNewEntries";
+import AddNewEntries from "./pages/AddNewEntriesPage";
 import ViewEntryPage from "./pages/ViewEntryPage";
 import EditProductPage from "./pages/EditProductPage";
 import "react-toastify/dist/ReactToastify.css";

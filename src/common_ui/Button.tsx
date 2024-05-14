@@ -3,6 +3,7 @@ import React from "react";
 import { ButtonProps } from "./types";
 
 const Button: React.FC<ButtonProps> = ({
+  id,
   type,
   onClick,
   className,
@@ -10,9 +11,10 @@ const Button: React.FC<ButtonProps> = ({
 }) => {
   return (
     <button
+      id={id}
       type={type}
       onClick={onClick}
-      className={`flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${className}`}
+      className={`flex justify-center ml-auto rounded-md  px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2  ${className}`}
     >
       {children}
     </button>

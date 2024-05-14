@@ -35,3 +35,12 @@ export interface AddButtonProps {
 export interface ResetButtonProps {
   handleResetClick: () => void;
 }
+
+export interface DashboardProps {
+  products: any[];
+  isLoading: boolean;
+  handleDelete: (productId: string) => void;
+  handleSearch: (searchValue: string) => void;
+  isRest: boolean;
+  fetchProducts: () => void;
+}

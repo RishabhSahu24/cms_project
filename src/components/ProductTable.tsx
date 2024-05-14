@@ -1,21 +1,20 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { ProductTableProps } from "./types";
+import NotFound from "../common_ui/NotFound";
 
 const ProductTable: React.FC<ProductTableProps> = ({
   products,
   handleDelete,
 }) => {
   return (
-    <div className="mt-4 shadow bg-gray-800 text-white">
+    <div className="mt-4 shadow bg-black text-white">
       <div className="relative overflow-x-auto">
         {products.length === 0 ? (
-          <div className="flex items-center text-5xl justify-center px-6 py-4 font-bold">
-            No data found.
-          </div>
+          <NotFound />
         ) : (
-          <table className="w-full text-sm text-left rtl:text-right text-white-400">
-            <thead className="text-xs uppercase bg-gray-700 text-white-400">
+          <table className="w-full text-sm text-white-400">
+            <thead className="text-md font-semibold uppercase bg-gray-700 text-white-400">
               <tr>
                 <th scope="col" className="px-6 py-3">
                   Sn No.
@@ -42,8 +41,8 @@ const ProductTable: React.FC<ProductTableProps> = ({
             </thead>
             <tbody>
               {products.map((product, index) => (
-                <tr key={product.id}>
-                  <td className="px-6 py-4 whitespace-nowrap">{index + 1}</td>
+                <tr key={product.id} className="border-b border-gray-600">
+                  <td className="px-6 py-4 whitespace-nowrap">{index + 1}.</td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     {product.name}
                   </td>
@@ -59,7 +58,7 @@ const ProductTable: React.FC<ProductTableProps> = ({
                   <td className="px-6 py-4 whitespace-nowrap">
                     {product.assigned ? "Yes" : "No"}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap space-x-2">
+                  <td className="px-6 py-4 whitespace-nowrap gap-4 space-x-2">
                     <Link
                       to={`/edit/${product.id}`}
                       className="text-yellow-500 hover:text-yellow-400"

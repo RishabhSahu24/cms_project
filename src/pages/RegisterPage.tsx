@@ -75,12 +75,8 @@ const RegisterPage: React.FC = () => {
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-white to-gray-200">
       <div className="flex flex-col justify-center px-6 py-12 lg:px-8 bg-white shadow-md rounded-lg w-2/5">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm ">
-          <img
-            className="mx-auto h-10 w-auto"
-            src="/logo.png"
-            alt="Your Company"
-          />
-          <h2 className="mt-6 text-left text-2xl font-bold leading-9 tracking-tight text-gray-900">
+          <img className="mx-auto h-12" src="/logo.png" alt="Your Company" />
+          <h2 className="mt-5 text-left text-2xl font-bold leading-9 tracking-tight text-gray-900">
             Register
           </h2>
           <p className="mt-1 text-left text-xs text-gray-500">
@@ -149,7 +145,12 @@ const RegisterPage: React.FC = () => {
                 </a>
               </label>
             </div>
-            <Button type="submit">Register</Button>
+            <Button
+              className="w-full bg-indigo-600 hover:bg-indigo-500 focus-visible:outline-indigo-600"
+              type="submit"
+            >
+              Register
+            </Button>
           </form>
           <p className="mt-10 text-center text-sm text-gray-500">
             Already have an account? &nbsp;

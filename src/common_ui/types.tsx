@@ -1,4 +1,5 @@
 export interface ButtonProps {
+  id?: string;
   type: "submit" | "button" | "reset";
   onClick?: () => void;
   className?: string;
@@ -12,4 +13,7 @@ export interface InputProps {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   id: string;
   required?: boolean;
+}
+export interface HeaderProps {
+  heading: string;
 }
