@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { doc, getDoc, updateDoc } from "@firebase/firestore";
-import { auth, db } from "../firebase/firebase";
+import { db } from "../firebase/firebase";
 import { ColorSelectProps, EntryData, RadioInputProps } from "./types";
 import { toast } from "react-toastify";
-import { UserData } from "../components/types";
 import LoadingPage from "./LoadingPage";
 import NavBar from "../components/NavBar";
 import Button from "../common_ui/Button";
 import Input from "../common_ui/Input";
 import Spinner from "../common_ui/Spinner";
 import Header from "../common_ui/Header";
+import { useUser } from "../context/userDetailsContext";
 
 const EditEntryPage: React.FC = () => {
+  const userDetails = useUser();
   const { id } = useParams<{ id: string }>();
-  const [userDetails, setUserDetails] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
   const [isEditingProducts, setIsEditingProducts] = useState(false);
   const [formData, setFormData] = useState({
@@ -25,25 +25,6 @@ const EditEntryPage: React.FC = () => {
     assigned: false,
     description: "",
   });
-
-  const fetchUserData = async () => {
-    auth.onAuthStateChanged(async (user) => {
-      if (user) {
-        const docRef = doc(db, "Users", user.uid);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          const userData = docSnap.data() as UserData;
-          setUserDetails(userData);
-          setLoading(false);
-        } else {
-          console.log("Problem");
-          setLoading(false);
-        }
-      } else {
-        setLoading(false);
-      }
-    });
-  };
 
   const fetchEntryData = async () => {
     try {
@@ -67,7 +48,6 @@ const EditEntryPage: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchUserData();
     fetchEntryData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
