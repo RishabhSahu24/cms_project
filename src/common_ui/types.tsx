@@ -4,6 +4,7 @@ export interface ButtonProps {
   onClick?: () => void;
   className?: string;
   children: any;
+  disabled?: boolean;
 }
 
 export interface InputProps {
@@ -13,6 +14,7 @@ export interface InputProps {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   id: string;
   required?: boolean;
+  error?: string;
 }
 export interface HeaderProps {
   heading: string;

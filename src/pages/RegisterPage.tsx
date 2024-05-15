@@ -12,23 +12,44 @@ const RegisterPage: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [agreeTerms, setAgreeTerms] = useState(false);
+  const [firstNameError, setFirstNameError] = useState("");
+  const [lastNameError, setLastNameError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
 
   const handleFirstNameChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setFirstName(event.target.value);
+    const value = event.target.value;
+    setFirstName(value);
+    setFirstNameError(value.trim() ? "" : "First Name is required");
   };
 
   const handleLastNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setLastName(event.target.value);
+    const value = event.target.value;
+    setLastName(value);
+    setLastNameError(value.trim() ? "" : "Last Name is required");
   };
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(event.target.value);
+    const value = event.target.value;
+    setEmail(value);
+    setEmailError(
+      value.trim() && value.endsWith("@gmail.com")
+        ? ""
+        : "Please enter a valid Gmail address"
+    );
   };
 
   const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(event.target.value);
+    const value = event.target.value;
+    setPassword(value);
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{6,}$/;
+    setPasswordError(
+      value.trim() && passwordRegex.test(value)
+        ? ""
+        : "Password must be at least 6 characters long, contain at least one capital letter, and one number"
+    );
   };
 
   const handleAgreeTermsChange = (
@@ -39,6 +60,24 @@ const RegisterPage: React.FC = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    if (
+      !firstName ||
+      !lastName ||
+      !email ||
+      !password ||
+      !agreeTerms ||
+      firstNameError ||
+      lastNameError ||
+      emailError ||
+      passwordError
+    ) {
+      toast.error("Please correct the form errors", {
+        position: "top-center",
+        delay: 2000,
+      });
+      return;
+    }
 
     try {
       await createUserWithEmailAndPassword(auth, email, password);
@@ -95,6 +134,7 @@ const RegisterPage: React.FC = () => {
                   onChange={handleFirstNameChange}
                   id="fname"
                   required
+                  error={firstNameError}
                 />
               </div>
               <div className="flex-1">
@@ -105,6 +145,7 @@ const RegisterPage: React.FC = () => {
                   onChange={handleLastNameChange}
                   id="lname"
                   required
+                  error={lastNameError}
                 />
               </div>
             </div>
@@ -115,6 +156,7 @@ const RegisterPage: React.FC = () => {
               onChange={handleEmailChange}
               id="email"
               required
+              error={emailError}
             />
             <Input
               label="Password"
@@ -123,6 +165,7 @@ const RegisterPage: React.FC = () => {
               onChange={handlePasswordChange}
               id="password"
               required
+              error={passwordError}
             />
             <div className="flex items-start mb-5">
               <div className="flex items-center h-5">

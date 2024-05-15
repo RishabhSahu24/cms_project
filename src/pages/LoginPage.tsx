@@ -8,21 +8,41 @@ import Input from "../common_ui/Input";
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(event.target.value);
+    const value = event.target.value;
+    setEmail(value);
+    setEmailError(
+      value.endsWith("@gmail.com") ? "" : "Email must end with @gmail.com"
+    );
   };
 
   const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(event.target.value);
+    const value = event.target.value;
+    setPassword(value);
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{6,}$/;
+    setPasswordError(
+      passwordRegex.test(value)
+        ? ""
+        : "Password must be at least 6 characters long and contain at least one capital letter and one number"
+    );
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    if (emailError || passwordError) {
+      toast.error("Please correct the form errors", {
+        position: "top-center",
+        delay: 2000,
+      });
+      return;
+    }
+
     try {
       await signInWithEmailAndPassword(auth, email, password);
-
       window.location.href = "/dashboard";
     } catch (error: any) {
       toast.error(error.message, {
@@ -51,6 +71,7 @@ const LoginPage: React.FC = () => {
               onChange={handleEmailChange}
               id="email"
               required
+              error={emailError}
             />
             <Input
               label="Password"
@@ -59,6 +80,7 @@ const LoginPage: React.FC = () => {
               onChange={handlePasswordChange}
               id="password"
               required
+              error={passwordError}
             />
             <Button
               type="submit"
