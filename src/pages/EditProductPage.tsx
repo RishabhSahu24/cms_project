@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { doc, getDoc, updateDoc } from "@firebase/firestore";
-import { auth, db } from "../context/firebase";
+import { auth, db } from "../firebase/firebase";
 import { ColorSelectProps, EntryData, RadioInputProps } from "./types";
 import { toast } from "react-toastify";
 import { UserData } from "../components/types";
