@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { UserData } from "../components/types";
 import { doc, getDoc } from "@firebase/firestore";
-import { auth, db } from "../context/firebase";
+import { auth, db } from "../firebase/firebase";
 import { addDoc, collection } from "firebase/firestore";
 import { toast } from "react-toastify";
 import LoadingPage from "./LoadingPage";

@@ -9,7 +9,7 @@ import {
   query,
   where,
 } from "@firebase/firestore";
-import { auth, db } from "../context/firebase";
+import { auth, db } from "../firebase/firebase";
 import Dashboard from "../components/Dashboard";
 import LoadingPage from "./LoadingPage";
 import NavBar from "../components/NavBar";

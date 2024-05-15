@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../context/firebase";
+import { auth } from "../firebase/firebase";
 import { toast } from "react-toastify";
 import Button from "../common_ui/Button";
 import Input from "../common_ui/Input";
